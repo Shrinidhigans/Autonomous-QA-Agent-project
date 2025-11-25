@@ -1680,59 +1680,6 @@ uvicorn backend.main:app --port 8001
 
 ---
 
-## 🎥 Demo Video
-
-### Creating Your Demo Video (5-10 minutes)
-
-Record a demo showing:
-
-1. **Introduction** (30 seconds)
-
-   - Briefly explain the project
-   - Show project structure
-
-2. **Phase 1: Document Upload** (2 minutes)
-
-   - Start backend and frontend
-   - Upload support documents
-   - Upload checkout.html
-   - Click "Build Knowledge Base"
-   - Show success message
-
-3. **Phase 2: Test Case Generation** (2-3 minutes)
-
-   - Enter a test query
-   - Adjust number of test cases
-   - Generate test cases
-   - Review generated test cases
-   - Highlight:
-     - Test case structure
-     - Source document references
-     - Positive and negative scenarios
-
-4. **Phase 3: Script Generation** (2-3 minutes)
-
-   - Select a test case
-   - Generate Selenium script
-   - Review the script code
-   - Show proper element selectors
-   - Demonstrate download functionality
-   - (Optional) Run the script
-
-5. **Conclusion** (1 minute)
-   - Recap key features
-   - Mention RAG technology
-   - Highlight zero hallucinations
-
-### Screen Recording Tools
-
-- **Windows**: OBS Studio, ShareX
-- **macOS**: QuickTime, OBS Studio
-- **Linux**: SimpleScreenRecorder, OBS Studio
-- **Online**: Loom, Screencast-O-Matic
-
----
-
 ## 🏗️ Architecture
 
 ### System Components
