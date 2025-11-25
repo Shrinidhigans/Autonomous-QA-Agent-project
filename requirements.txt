@@ -1,0 +1,40 @@
+# Core Web Framework
+fastapi
+uvicorn[standard]
+python-multipart
+
+# LangChain and AI
+langchain
+langchain-community
+
+# Embeddings and Vector Store
+sentence-transformers
+chromadb
+
+# Document Processing
+beautifulsoup4
+lxml
+pymupdf==1.26.6
+python-docx
+
+# HTTP Requests
+requests
+
+# Data Processing
+pydantic
+python-dotenv
+
+# Streamlit UI
+streamlit
+
+# Selenium for Script Execution
+selenium
+webdriver-manager
+
+# Testing
+pytest
+pytest-asyncio
+
+# Utilities
+numpy
+pandas

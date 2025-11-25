@@ -1,0 +1,482 @@
+================================================================================
+E-SHOP CHECKOUT - VALIDATION RULES SPECIFICATION
+Version 1.0 | November 2024
+================================================================================
+
+PURPOSE:
+This document defines all validation rules for the E-Shop Checkout application.
+These rules must be enforced during form submission and user interactions.
+
+================================================================================
+SECTION 1: CUSTOMER INFORMATION VALIDATION
+================================================================================
+
+1.1 FULL NAME FIELD (ID: customer-name)
+--------------------------------------------------------------------------------
+Field Type: Text Input
+Required: YES
+HTML Attribute: required
+
+Validation Rules:
+✓ MUST NOT be empty
+✓ MUST contain at least 1 character
+✓ Maximum length: 100 characters (best practice)
+✓ May contain letters, spaces, hyphens, apostrophes
+✓ Leading/trailing spaces should be trimmed
+
+Valid Examples:
+- "John Doe"
+- "Mary-Jane O'Connor"
+- "李明" (Unicode characters allowed)
+- "Dr. Smith Jr."
+
+Invalid Examples:
+- "" (empty string)
+- "   " (only whitespace)
+- null or undefined
+
+Error Message:
+"Please enter your name"
+
+Display Rules:
+- Error displays below input field
+- Error color: #dc3545 (red)
+- Error font size: 0.9rem
+- Error ID: name-error
+
+--------------------------------------------------------------------------------
+
+1.2 EMAIL ADDRESS FIELD (ID: customer-email)
+--------------------------------------------------------------------------------
+Field Type: Email Input
+Required: YES
+HTML Attribute: required, type="email"
+
+Validation Rules:
+✓ MUST NOT be empty
+✓ MUST contain "@" symbol
+✓ MUST contain a domain (text after @)
+✓ MUST contain a top-level domain (text after .)
+✓ Pattern: [local-part]@[domain].[tld]
+✓ Maximum length: 254 characters (RFC 5321 standard)
+✓ No spaces allowed anywhere in email
+
+Email Regex Pattern:
+^[^\s@]+@[^\s@]+\.[^\s@]+$
+
+Breakdown:
+- ^[^\s@]+ : One or more characters that are not space or @
+- @ : Literal @ symbol
+- [^\s@]+ : One or more characters that are not space or @
+- \. : Literal dot
+- [^\s@]+$ : One or more characters that are not space or @, until end
+
+Valid Examples:
+- "john.doe@example.com"
+- "user+tag@domain.co.uk"
+- "test_email@subdomain.example.org"
+- "123@numbers.com"
+
+Invalid Examples:
+- "" (empty)
+- "notanemail" (no @ symbol)
+- "test@" (no domain)
+- "@example.com" (no local part)
+- "test @example.com" (contains space)
+- "test@domain" (no TLD)
+
+Error Message:
+"Please enter a valid email"
+
+Display Rules:
+- Error displays below input field
+- Error color: #dc3545 (red)
+- Error font size: 0.9rem
+- Error ID: email-error
+
+--------------------------------------------------------------------------------
+
+1.3 DELIVERY ADDRESS FIELD (ID: customer-address)
+--------------------------------------------------------------------------------
+Field Type: Text Input
+Required: YES
+HTML Attribute: required
+
+Validation Rules:
+✓ MUST NOT be empty
+✓ MUST contain at least 5 characters
+✓ Maximum length: 200 characters
+✓ May contain letters, numbers, spaces, punctuation
+✓ Leading/trailing spaces should be trimmed
+
+Valid Examples:
+- "123 Main Street, Apt 4B"
+- "456 Oak Avenue, City, State 12345"
+- "Building 7, Floor 3, Office 301"
+
+Invalid Examples:
+- "" (empty string)
+- "123" (too short, less than 5 characters)
+- "    " (only whitespace)
+
+Error Message:
+"Please enter your address"
+
+Display Rules:
+- Error displays below input field
+- Error color: #dc3545 (red)
+- Error font size: 0.9rem
+- Error ID: address-error
+
+================================================================================
+SECTION 2: SHIPPING METHOD VALIDATION
+================================================================================
+
+2.1 SHIPPING METHOD SELECTION
+--------------------------------------------------------------------------------
+Field Type: Radio Button Group
+Required: YES
+Name Attribute: shipping
+Options: standard, express
+
+Validation Rules:
+✓ One option MUST be selected
+✓ Default selection: "standard" (checked on page load)
+✓ Only one option can be selected at a time
+✓ Selection MUST trigger shipping cost recalculation
+
+Valid Values:
+- "standard" : Free shipping ($0.00)
+- "express" : Express shipping ($10.00)
+
+Invalid States:
+- No selection (prevented by having default checked)
+
+Shipping Cost Rules:
+- Standard: $0.00 (always free)
+- Express: $10.00 (flat rate)
+- Shipping cost is ADDED to subtotal AFTER discount
+
+Calculation Formula:
+Total = (Subtotal - Discount) + Shipping Cost
+
+Element IDs:
+- Standard Radio: shipping-standard
+- Express Radio: shipping-express
+
+================================================================================
+SECTION 3: PAYMENT METHOD VALIDATION
+================================================================================
+
+3.1 PAYMENT METHOD SELECTION
+--------------------------------------------------------------------------------
+Field Type: Radio Button Group
+Required: YES
+Name Attribute: payment
+Options: credit-card, paypal
+
+Validation Rules:
+✓ One option MUST be selected
+✓ Default selection: "credit-card" (checked on page load)
+✓ Only one option can be selected at a time
+
+Valid Values:
+- "credit-card" : Credit Card payment
+- "paypal" : PayPal payment
+
+Invalid States:
+- No selection (prevented by having default checked)
+
+Element IDs:
+- Credit Card Radio: payment-credit-card
+- PayPal Radio: payment-paypal
+
+Note: In current version, payment method selection does not affect
+calculation or trigger additional validation. It's for user preference only.
+
+================================================================================
+SECTION 4: SHOPPING CART VALIDATION
+================================================================================
+
+4.1 CART CONTENTS VALIDATION
+--------------------------------------------------------------------------------
+Validation Type: Pre-submission Check
+
+Validation Rules:
+✓ Cart MUST contain at least one item before payment
+✓ Each item MUST have quantity >= 1
+✓ Each item MUST have quantity <= 99
+
+Error Handling:
+- Empty cart on "Pay Now" click: Display alert "Your cart is empty!"
+- Alert type: JavaScript alert() popup
+- User must add items before proceeding
+
+4.2 QUANTITY VALIDATION
+--------------------------------------------------------------------------------
+Field Type: Number Input
+Minimum Value: 1
+Maximum Value: 99
+
+Validation Rules:
+✓ Quantity MUST be an integer
+✓ Quantity MUST be >= 1
+✓ Quantity MUST be <= 99
+✓ Invalid quantities should be reset to 1
+
+Valid Examples:
+- 1, 2, 5, 10, 99
+
+Invalid Examples:
+- 0 (too low)
+- 100 (too high)
+- -5 (negative)
+- 1.5 (decimal)
+- "abc" (non-numeric)
+
+Auto-correction:
+- If quantity < 1: Reset to 1
+- If quantity > 99: Reset to 99
+- If non-numeric: Reset to 1
+
+================================================================================
+SECTION 5: DISCOUNT CODE VALIDATION
+================================================================================
+
+5.1 DISCOUNT CODE INPUT
+--------------------------------------------------------------------------------
+Field ID: discount-code
+Field Type: Text Input
+Required: NO (optional field)
+
+Validation Rules:
+✓ Code is case-INSENSITIVE (convert to uppercase for comparison)
+✓ Leading/trailing spaces should be trimmed
+✓ Empty submission should show specific error
+✓ Invalid code should show specific error
+✓ Valid code should show success message and update total
+
+5.2 VALID DISCOUNT CODES
+--------------------------------------------------------------------------------
+
+Code: SAVE15
+- Discount: 15% off subtotal
+- Minimum Purchase: $0.00 (no minimum)
+- Valid Until: December 31, 2025
+- Success Message: "✅ 15% discount applied!"
+- Message Color: #28a745 (green)
+
+Code: SAVE20
+- Discount: 20% off subtotal
+- Minimum Purchase: $0.00 (no minimum in basic version)
+- Valid Until: December 31, 2025
+- Success Message: "✅ 20% discount applied!"
+- Message Color: #28a745 (green)
+
+5.3 DISCOUNT CODE ERRORS
+--------------------------------------------------------------------------------
+
+Error Case 1: Empty Code
+- Input: "" (empty string)
+- Error Message: "Please enter a discount code"
+- Message Color: #dc3545 (red)
+
+Error Case 2: Invalid Code
+- Input: Any code not matching SAVE15 or SAVE20
+- Examples: "INVALID", "SAVE10", "EXPIRED"
+- Error Message: "❌ Invalid discount code"
+- Message Color: #dc3545 (red)
+
+5.4 DISCOUNT CALCULATION RULES
+--------------------------------------------------------------------------------
+✓ Discount applies to SUBTOTAL only (sum of all items)
+✓ Discount does NOT apply to shipping cost
+✓ Discount is calculated BEFORE adding shipping
+✓ Only ONE discount code can be active at a time
+✓ Applying new code replaces previous discount
+
+Calculation Formula:
+1. Subtotal = Sum of (Item Price × Quantity) for all items
+2. Discount Amount = Subtotal × (Discount Percentage / 100)
+3. Discounted Subtotal = Subtotal - Discount Amount
+4. Total = Discounted Subtotal + Shipping Cost
+
+Example:
+Subtotal: $279.97
+Discount (SAVE15): $279.97 × 0.15 = $41.99
+Discounted Subtotal: $279.97 - $41.99 = $237.98
+Shipping (Express): $10.00
+Total: $237.98 + $10.00 = $247.98
+
+Display Format:
+- Subtotal: "$279.97"
+- Discount: "-$41.99" (negative, showing reduction)
+- Shipping: "$10.00"
+- Total: "$247.98"
+
+================================================================================
+SECTION 6: FORM SUBMISSION VALIDATION
+================================================================================
+
+6.1 PRE-SUBMISSION VALIDATION SEQUENCE
+--------------------------------------------------------------------------------
+When "Pay Now" button (ID: pay-now) is clicked, perform validation in order:
+
+Step 1: Validate Customer Name
+- Check: Is field empty or whitespace only?
+- If invalid: Show name-error, set isValid = false
+
+Step 2: Validate Email
+- Check: Is field empty?
+- Check: Does email match regex pattern?
+- If invalid: Show email-error, set isValid = false
+
+Step 3: Validate Address
+- Check: Is field empty or whitespace only?
+- If invalid: Show address-error, set isValid = false
+
+Step 4: Validate Cart
+- Check: Does cart contain at least one item?
+- If invalid: Show alert "Your cart is empty!", set isValid = false
+
+Step 5: Check Overall Validity
+- If isValid == true: Proceed to success
+- If isValid == false: Stop submission, show errors
+
+6.2 ERROR DISPLAY RULES
+--------------------------------------------------------------------------------
+✓ Hide all error messages initially (display: none)
+✓ Show only relevant errors on validation failure
+✓ Errors appear below their respective input fields
+✓ All error text in red (#dc3545)
+✓ Error font size: 0.9rem
+✓ Errors remain visible until user corrects and resubmits
+
+6.3 SUCCESS BEHAVIOR
+--------------------------------------------------------------------------------
+If all validations pass:
+
+✓ Hide checkout form (ID: checkout-form)
+  - Set style: display = 'none'
+
+✓ Show success message (ID: success-message)
+  - Set style: display = 'block'
+  - Message text: "✅ Payment Successful! Thank you for your order."
+  - Background color: #28a745 (green)
+  - Text color: white
+  - Font size: 1.5rem
+
+✓ No actual payment processing (demo only)
+✓ No form reset or page reload
+✓ Success message remains visible
+
+================================================================================
+SECTION 7: VALIDATION ERROR MESSAGES REFERENCE
+================================================================================
+
+Field: customer-name
+Error ID: name-error
+Message: "Please enter your name"
+Trigger: Empty or whitespace-only input
+
+Field: customer-email
+Error ID: email-error
+Message: "Please enter a valid email"
+Trigger: Empty input OR invalid email format
+
+Field: customer-address
+Error ID: address-error
+Message: "Please enter your address"
+Trigger: Empty or whitespace-only input
+
+Field: discount-code
+Error ID: discount-message
+Message (empty): "Please enter a discount code"
+Message (invalid): "❌ Invalid discount code"
+Success: "✅ 15% discount applied!" or "✅ 20% discount applied!"
+
+Cart Validation:
+Alert: "Your cart is empty!"
+Trigger: Attempting payment with no items in cart
+
+================================================================================
+SECTION 8: VALIDATION IMPLEMENTATION CHECKLIST
+================================================================================
+
+For Automated Tests:
+☐ Test empty name field - expect error
+☐ Test valid name - expect no error
+☐ Test empty email - expect error
+☐ Test email without @ - expect error
+☐ Test email without domain - expect error
+☐ Test valid email - expect no error
+☐ Test empty address - expect error
+☐ Test short address (< 5 chars) - expect error
+☐ Test valid address - expect no error
+☐ Test payment with empty cart - expect alert
+☐ Test valid discount codes (SAVE15, SAVE20)
+☐ Test invalid discount code
+☐ Test empty discount code
+☐ Test complete valid submission - expect success message
+☐ Verify success message hides form
+☐ Verify error messages display in red
+☐ Verify error messages have correct IDs
+
+================================================================================
+SECTION 9: VALIDATION TIMING
+================================================================================
+
+Real-time Validation: NO
+- Validation is NOT triggered on field blur or input
+- Validation is NOT triggered as user types
+
+Submit-time Validation: YES
+- All validation occurs when "Pay Now" button is clicked
+- Function: processPayment() performs validation
+- No validation during form filling
+
+Exception: Discount Code
+- Discount code validation occurs when "Apply" button is clicked
+- Function: applyDiscount() performs validation
+- Independent of form submission validation
+
+================================================================================
+SECTION 10: EDGE CASES AND SPECIAL SCENARIOS
+================================================================================
+
+Edge Case 1: All Fields Empty
+Expected: Show all three error messages (name, email, address)
+
+Edge Case 2: Valid Fields but Empty Cart
+Expected: Fields pass validation, but alert "Your cart is empty!"
+
+Edge Case 3: Whitespace in Email
+Input: "test @example.com"
+Expected: Fail validation (spaces not allowed)
+
+Edge Case 4: Unicode Characters in Name
+Input: "李明"
+Expected: Pass validation (Unicode supported)
+
+Edge Case 5: Multiple Discount Attempts
+Scenario: Apply SAVE15, then apply SAVE20
+Expected: Second code replaces first, 20% discount active
+
+Edge Case 6: Discount Code Case Variations
+Input: "save15", "SAVE15", "Save15", "SaVe15"
+Expected: All variations accepted (case-insensitive)
+
+Edge Case 7: Leading/Trailing Spaces in Fields
+Input: "  John Doe  " (spaces before and after)
+Expected: Should be trimmed and pass validation
+
+================================================================================
+END OF VALIDATION RULES SPECIFICATION
+================================================================================
+
+Document Status: Final
+Version: 1.0
+Last Updated: November 25, 2024
+Next Review: December 25, 2024
+
+For questions or clarifications, contact: qa-team@eshop.example.com

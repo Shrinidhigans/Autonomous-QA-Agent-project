@@ -1,0 +1,307 @@
+E-SHOP CHECKOUT - UI/UX STYLE GUIDE
+Version 1.0 | November 2024
+================================================================================
+
+TABLE OF CONTENTS
+1. Color Palette
+2. Typography
+3. Button Specifications
+4. Form Elements
+5. Error Messages & Validation
+6. Interactive States
+7. Layout Guidelines
+8. Accessibility Requirements
+
+================================================================================
+1. COLOR PALETTE
+================================================================================
+
+Primary Colors:
+- Primary Purple: #667eea (Main brand color)
+- Secondary Purple: #764ba2 (Gradient accent)
+- Success Green: #28a745 (Confirmations, success states)
+- Error Red: #dc3545 (Validation errors, warnings)
+
+Neutral Colors:
+- White: #ffffff (Background, cards)
+- Light Gray: #f8f9fa (Section backgrounds)
+- Medium Gray: #e0e0e0 (Borders)
+- Dark Gray: #333333 (Primary text)
+- Light Text: #999999 (Secondary text, placeholders)
+
+Gradients:
+- Header Gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+- Background Gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+
+================================================================================
+2. TYPOGRAPHY
+================================================================================
+
+Font Family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
+Heading Sizes:
+- H1 (Page Title): 2.5rem (40px), Bold, Color: White (on gradient background)
+- H2 (Section Headers): 1.5rem (24px), Bold, Color: #667eea
+- H3 (Product Names): 1rem (16px), Bold, Color: #333333
+
+Body Text:
+- Default: 1rem (16px), Regular, Color: #333333
+- Small Text: 0.9rem (14.4px), Regular
+- Large Text: 1.2rem (19.2px), Bold (for prices)
+
+Button Text:
+- Default: 1rem (16px), Semi-Bold (weight: 600)
+- Large Buttons: 1.1rem (17.6px), Semi-Bold
+
+================================================================================
+3. BUTTON SPECIFICATIONS
+================================================================================
+
+Primary Buttons:
+- Background: #667eea (Primary purple)
+- Text Color: White
+- Padding: 10px 20px
+- Border Radius: 5px
+- Font Weight: 600 (Semi-bold)
+- Hover State: Background #5568d3, translateY(-2px)
+- Transition: all 0.3s ease
+
+Success Button (Pay Now):
+- Background: #28a745 (Green)
+- Text Color: White
+- Padding: 15px 30px
+- Font Size: 1.1rem
+- Border Radius: 5px
+- Width: 100% (full width)
+- Hover State: Background #218838
+
+Button States:
+- Default: Normal appearance
+- Hover: Slight lift effect (translateY(-2px)), darker background
+- Active: Pressed appearance
+- Disabled: Opacity 0.6, cursor not-allowed
+
+================================================================================
+4. FORM ELEMENTS
+================================================================================
+
+Input Fields:
+- Width: 100% of container
+- Padding: 12px
+- Border: 2px solid #dddddd
+- Border Radius: 5px
+- Font Size: 1rem
+- Transition: border-color 0.3s
+
+Input Focus State:
+- Border Color: #667eea (Primary purple)
+- Outline: none
+- Box Shadow: none
+
+Labels:
+- Display: block
+- Margin Bottom: 8px
+- Color: #333333
+- Font Weight: 600 (Semi-bold)
+
+Required Field Indicator:
+- Symbol: * (asterisk)
+- Color: #dc3545 (Error red)
+- Position: After label text
+
+Radio Buttons:
+- Display: Flex layout
+- Padding: 12px
+- Background: White
+- Border: 2px solid #dddddd
+- Border Radius: 5px
+- Hover Border: #667eea
+- Transition: all 0.3s
+
+Quantity Input:
+- Width: 60px
+- Text Align: center
+- Border: 2px solid #dddddd
+- Border Radius: 5px
+
+================================================================================
+5. ERROR MESSAGES & VALIDATION
+================================================================================
+
+Error Message Display:
+- Color: #dc3545 (Red)
+- Font Size: 0.9rem
+- Margin Top: 5px
+- Display: Initially hidden (display: none)
+- Show on validation failure
+
+Error Message Text:
+- Name Error: "Please enter your name"
+- Email Error: "Please enter a valid email"
+- Address Error: "Please enter your address"
+- Empty Cart: "Your cart is empty!" (alert popup)
+
+Discount Code Messages:
+Success (Valid Code):
+- Text: "✅ 15% discount applied!" or "✅ 20% discount applied!"
+- Color: #28a745 (Green)
+
+Error (Invalid Code):
+- Text: "❌ Invalid discount code"
+- Color: #dc3545 (Red)
+
+Error (Empty Code):
+- Text: "Please enter a discount code"
+- Color: #dc3545 (Red)
+
+Validation Rules:
+- Email Format: Must contain "@" and valid domain
+- Name: Minimum 1 character (non-empty)
+- Address: Minimum 1 character (non-empty)
+- Real-time validation on "Pay Now" button click
+- All errors must be displayed in red text below the input field
+
+================================================================================
+6. INTERACTIVE STATES
+================================================================================
+
+Product Card Hover:
+- Transform: translateY(-2px)
+- Box Shadow: Increase from 0 2px 5px to 0 4px 8px
+- Transition: transform 0.2s
+
+Cart Item Display:
+- Background: White card with shadow
+- Border Radius: 8px
+- Padding: 15px
+- Margin Bottom: 10px
+
+Success Message:
+- Background: #28a745 (Green)
+- Color: White
+- Padding: 20px
+- Border Radius: 10px
+- Text Align: center
+- Font Size: 1.5rem
+- Display: Initially hidden
+- Show on successful payment
+
+Total Section:
+- Background: Gradient (same as header)
+- Color: White
+- Padding: 20px
+- Border Radius: 10px
+- Final Total Row: Font Size 1.5rem, Bold
+
+================================================================================
+7. LAYOUT GUIDELINES
+================================================================================
+
+Container:
+- Max Width: 1200px
+- Margin: 0 auto (centered)
+- Background: White
+- Border Radius: 15px
+- Box Shadow: 0 10px 40px rgba(0,0,0,0.2)
+
+Grid Layout:
+- Display: CSS Grid
+- Columns: 1fr 1fr (two equal columns)
+- Gap: 30px
+- Padding: 30px
+
+Section Spacing:
+- Background: #f8f9fa (Light gray)
+- Padding: 25px
+- Border Radius: 10px
+- Border: 1px solid #e0e0e0
+- Margin: Handled by grid gap
+
+Responsive Behavior:
+- Desktop: Two column layout
+- Tablet: Two column layout (stacked on mobile if needed)
+- Mobile: Single column layout (not implemented in basic version)
+
+================================================================================
+8. ACCESSIBILITY REQUIREMENTS
+================================================================================
+
+WCAG 2.1 Level AA Compliance:
+
+Color Contrast:
+- Text on white background: Minimum 4.5:1 ratio
+- White text on primary purple: Meets AA standard
+- Error text (#dc3545) on white: Meets AA standard
+
+Keyboard Navigation:
+- All interactive elements must be keyboard accessible
+- Tab order must be logical (top to bottom, left to right)
+- Focus states must be visible
+- Enter key must trigger primary actions
+
+Form Accessibility:
+- All form inputs must have associated labels
+- Required fields must be marked with asterisk (*)
+- Error messages must be associated with inputs
+- Submit button must be clearly labeled
+
+Interactive Element Requirements:
+- Minimum touch target size: 44x44 pixels
+- Adequate spacing between clickable elements
+- Clear visual feedback for all interactions
+
+Screen Reader Support:
+- Semantic HTML elements used throughout
+- Alt text for any images (not applicable in basic version)
+- ARIA labels where necessary
+- Meaningful page title
+
+================================================================================
+9. ANIMATION & TRANSITIONS
+================================================================================
+
+Standard Transitions:
+- Duration: 0.3s
+- Easing: ease (default)
+- Properties: all, background-color, border-color, transform
+
+Button Hover Animation:
+- Transform: translateY(-2px)
+- Duration: 0.3s
+
+Card Hover Animation:
+- Transform: translateY(-2px)
+- Box Shadow: Enhanced
+- Duration: 0.2s
+
+Focus Transitions:
+- Border Color: 0.3s ease
+- No jarring changes
+
+================================================================================
+10. COMPONENT SPECIFICATIONS
+================================================================================
+
+Product Card:
+- Background: White
+- Padding: 15px
+- Border Radius: 8px
+- Box Shadow: 0 2px 5px rgba(0,0,0,0.1)
+- Hover Shadow: 0 4px 8px rgba(0,0,0,0.15)
+
+Shopping Cart Summary:
+- Subtotal Row: Regular weight
+- Discount Row: Regular weight, negative value in red
+- Shipping Row: Regular weight
+- Total Row: Bold, larger font (1.5rem)
+- Background: Gradient, white text
+
+Checkout Form:
+- All inputs full width
+- Consistent spacing (20px between groups)
+- Clear visual hierarchy
+- Proper grouping of related elements
+
+================================================================================
+END OF UI/UX STYLE GUIDE
+================================================================================

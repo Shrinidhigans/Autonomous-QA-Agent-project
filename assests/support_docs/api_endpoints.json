@@ -1,0 +1,433 @@
+{
+  "api_version": "1.0",
+  "base_url": "https://api.eshop.example.com/v1",
+  "description": "E-Shop Checkout API Endpoints",
+  "authentication": {
+    "type": "Bearer Token",
+    "header": "Authorization: Bearer {token}"
+  },
+  "endpoints": [
+    {
+      "path": "/products",
+      "method": "GET",
+      "description": "Retrieve list of available products",
+      "authentication_required": false,
+      "parameters": {
+        "query": {
+          "category": {
+            "type": "string",
+            "required": false,
+            "description": "Filter by product category"
+          },
+          "in_stock": {
+            "type": "boolean",
+            "required": false,
+            "description": "Filter by stock availability"
+          }
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "products": [
+            {
+              "id": 1,
+              "name": "Wireless Headphones",
+              "price": 99.99,
+              "category": "Audio Equipment",
+              "in_stock": true
+            }
+          ]
+        }
+      },
+      "error_codes": {
+        "404": "Products not found",
+        "500": "Internal server error"
+      }
+    },
+    {
+      "path": "/cart/add",
+      "method": "POST",
+      "description": "Add item to shopping cart",
+      "authentication_required": false,
+      "request_body": {
+        "product_id": {
+          "type": "integer",
+          "required": true,
+          "description": "ID of the product to add"
+        },
+        "quantity": {
+          "type": "integer",
+          "required": true,
+          "description": "Quantity to add (min: 1, max: 99)",
+          "min": 1,
+          "max": 99
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "success": true,
+          "message": "Item added to cart",
+          "cart_total": 99.99,
+          "item_count": 1
+        }
+      },
+      "error_codes": {
+        "400": "Invalid product ID or quantity",
+        "404": "Product not found",
+        "500": "Internal server error"
+      }
+    },
+    {
+      "path": "/cart/update",
+      "method": "PUT",
+      "description": "Update item quantity in cart",
+      "authentication_required": false,
+      "request_body": {
+        "product_id": {
+          "type": "integer",
+          "required": true
+        },
+        "quantity": {
+          "type": "integer",
+          "required": true,
+          "min": 1,
+          "max": 99
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "success": true,
+          "message": "Cart updated",
+          "cart_total": 199.98
+        }
+      },
+      "error_codes": {
+        "400": "Invalid request",
+        "404": "Item not in cart",
+        "500": "Internal server error"
+      }
+    },
+    {
+      "path": "/cart/remove",
+      "method": "DELETE",
+      "description": "Remove item from cart",
+      "authentication_required": false,
+      "request_body": {
+        "product_id": {
+          "type": "integer",
+          "required": true,
+          "description": "ID of product to remove"
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "success": true,
+          "message": "Item removed from cart",
+          "cart_total": 79.99
+        }
+      },
+      "error_codes": {
+        "400": "Invalid product ID",
+        "404": "Item not found in cart",
+        "500": "Internal server error"
+      }
+    },
+    {
+      "path": "/discount/apply",
+      "method": "POST",
+      "description": "Apply discount code to order",
+      "authentication_required": false,
+      "request_body": {
+        "code": {
+          "type": "string",
+          "required": true,
+          "description": "Discount code (e.g., SAVE15, SAVE20)",
+          "max_length": 20
+        },
+        "cart_total": {
+          "type": "number",
+          "required": true,
+          "description": "Current cart subtotal"
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "success": true,
+          "code": "SAVE15",
+          "discount_percent": 15,
+          "discount_amount": 41.99,
+          "new_total": 237.98,
+          "message": "15% discount applied!"
+        }
+      },
+      "valid_codes": {
+        "SAVE15": {
+          "discount_percent": 15,
+          "min_purchase": 0,
+          "valid_until": "2025-12-31"
+        },
+        "SAVE20": {
+          "discount_percent": 20,
+          "min_purchase": 150,
+          "valid_until": "2025-12-31"
+        }
+      },
+      "error_codes": {
+        "400": "Invalid or expired discount code",
+        "422": "Minimum purchase requirement not met",
+        "500": "Internal server error"
+      }
+    },
+    {
+      "path": "/discount/validate",
+      "method": "POST",
+      "description": "Validate discount code without applying",
+      "authentication_required": false,
+      "request_body": {
+        "code": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "valid": true,
+          "code": "SAVE15",
+          "discount_percent": 15,
+          "min_purchase": 0,
+          "expiry_date": "2025-12-31"
+        }
+      },
+      "error_codes": {
+        "400": "Invalid discount code",
+        "500": "Internal server error"
+      }
+    },
+    {
+      "path": "/shipping/calculate",
+      "method": "POST",
+      "description": "Calculate shipping cost",
+      "authentication_required": false,
+      "request_body": {
+        "shipping_method": {
+          "type": "string",
+          "required": true,
+          "enum": ["standard", "express"],
+          "description": "Selected shipping method"
+        },
+        "destination": {
+          "type": "string",
+          "required": false,
+          "description": "Destination address (for future use)"
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "shipping_method": "express",
+          "cost": 10.0,
+          "estimated_delivery": "2-3 business days",
+          "tracking_included": true
+        }
+      },
+      "shipping_rates": {
+        "standard": {
+          "cost": 0,
+          "delivery_time": "5-7 business days",
+          "tracking": false
+        },
+        "express": {
+          "cost": 10,
+          "delivery_time": "2-3 business days",
+          "tracking": true
+        }
+      },
+      "error_codes": {
+        "400": "Invalid shipping method",
+        "500": "Internal server error"
+      }
+    },
+    {
+      "path": "/order/submit",
+      "method": "POST",
+      "description": "Submit order for processing",
+      "authentication_required": false,
+      "request_body": {
+        "customer": {
+          "type": "object",
+          "required": true,
+          "properties": {
+            "name": {
+              "type": "string",
+              "required": true,
+              "min_length": 2,
+              "max_length": 100
+            },
+            "email": {
+              "type": "string",
+              "required": true,
+              "format": "email",
+              "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+            },
+            "address": {
+              "type": "string",
+              "required": true,
+              "min_length": 5,
+              "max_length": 200
+            }
+          }
+        },
+        "cart": {
+          "type": "array",
+          "required": true,
+          "items": {
+            "product_id": "integer",
+            "quantity": "integer"
+          }
+        },
+        "shipping_method": {
+          "type": "string",
+          "required": true,
+          "enum": ["standard", "express"]
+        },
+        "payment_method": {
+          "type": "string",
+          "required": true,
+          "enum": ["credit-card", "paypal"]
+        },
+        "discount_code": {
+          "type": "string",
+          "required": false
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "success": true,
+          "order_id": "ORD-2024-001234",
+          "message": "Payment Successful!",
+          "order_total": 247.98,
+          "estimated_delivery": "2024-12-05",
+          "tracking_number": "TRACK123456"
+        }
+      },
+      "validation_rules": {
+        "name": "Required, non-empty string",
+        "email": "Required, valid email format with @ and domain",
+        "address": "Required, minimum 5 characters",
+        "cart": "Must contain at least one item",
+        "shipping_method": "Must be 'standard' or 'express'",
+        "payment_method": "Must be 'credit-card' or 'paypal'"
+      },
+      "error_codes": {
+        "400": "Validation error - check request body",
+        "422": "Invalid cart or empty cart",
+        "500": "Internal server error"
+      }
+    },
+    {
+      "path": "/order/validate",
+      "method": "POST",
+      "description": "Validate order details before submission",
+      "authentication_required": false,
+      "request_body": {
+        "customer": {
+          "type": "object",
+          "required": true
+        },
+        "cart": {
+          "type": "array",
+          "required": true
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "valid": true,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "error_response": {
+        "status_code": 400,
+        "body": {
+          "valid": false,
+          "errors": [
+            {
+              "field": "email",
+              "message": "Please enter a valid email"
+            },
+            {
+              "field": "cart",
+              "message": "Cart is empty"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "path": "/payment/process",
+      "method": "POST",
+      "description": "Process payment transaction",
+      "authentication_required": true,
+      "request_body": {
+        "order_id": {
+          "type": "string",
+          "required": true
+        },
+        "payment_method": {
+          "type": "string",
+          "required": true,
+          "enum": ["credit-card", "paypal"]
+        },
+        "amount": {
+          "type": "number",
+          "required": true,
+          "min": 0.01
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": {
+          "success": true,
+          "transaction_id": "TXN-20241125-001",
+          "payment_status": "completed",
+          "message": "Payment processed successfully"
+        }
+      },
+      "error_codes": {
+        "400": "Invalid payment details",
+        "402": "Payment required",
+        "500": "Payment processing error"
+      }
+    }
+  ],
+  "common_headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "X-API-Version": "1.0"
+  },
+  "rate_limiting": {
+    "requests_per_minute": 60,
+    "requests_per_hour": 1000,
+    "rate_limit_headers": {
+      "X-RateLimit-Limit": "Requests allowed per period",
+      "X-RateLimit-Remaining": "Requests remaining",
+      "X-RateLimit-Reset": "Time when limit resets"
+    }
+  },
+  "error_response_format": {
+    "error": {
+      "code": "ERROR_CODE",
+      "message": "Human readable error message",
+      "details": "Additional error details",
+      "timestamp": "2024-11-25T10:30:00Z"
+    }
+  }
+}
