@@ -69,7 +69,7 @@ Support Documents
 Configuration
 Testing
 Troubleshooting
-Demo Video
+
 🚀 Quick Start
 Prerequisites
 Python 3.9 or higher
