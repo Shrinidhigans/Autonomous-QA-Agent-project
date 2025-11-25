@@ -1835,7 +1835,6 @@ For questions or issues:
 **⭐ If this project helped you, please consider giving it a star on GitHub!**
 
 ---
----
 
 **Happy Optimizing & Automating! 🚀**
 
