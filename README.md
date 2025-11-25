@@ -1836,9 +1836,9 @@ For questions or issues:
 
 ---
 
-**Happy Optimizing & Automating! 🚀**
+**Happy Automating! 🚀**
 
 ---
 
-> Built with ❤️ for the optimization and QA community.  
+> Built with ❤️ for the QA community.  
 > For questions or support, [open an issue] or email: shrinidhiganesan0507@gmail.com
